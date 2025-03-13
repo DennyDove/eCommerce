@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title>Main page</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Клуб нумизматов</h1>
+<h3></h3>
+<!-- Основной контейнер, включающий остальные DIV-->
+<div id="container">
+<!--  <div id="logo"></div> -->
+    <!-- <br /><br /> -->
+    <div class="button_holder1">
+      <input type="button" id="regButton" value="Регистрация" onclick="window.location.href='registration.html'"/>
+    </div>
+
+    <div>Монет в корзине: [[ ${coinsNumber} ]] </div>
+
+    <div id="content_container">
+      <form>
+          <div class="itemAdded" th:each="coin: ${coins}">
+              <table align=left>
+                    <tr>
+                      <td> <div class="cart_item"> <img th:src="@{'data: product/jpeg; base64, '+${coin.product.getImageDataBase64()}}" width="33" height="33" border="0"></div> </td>
+                      <td> <div class="cart_text"> [[ ${coin.product.name} ]]</div> </td>
+                      <td> <div class="cart_text"> Цена: [[ ${coin.product.price} ]] </div> </td>
+                      <td> <div class="cart_text">  Количество: [[ ${coin.quantity} ]] <input type="number"id="qty_input" th:name="quantity" th:value="${coin.quantity}"> </div> </td>
+                    </tr>
+              </table>
+            </div>
+            <input type="submit" value="Оформить заказ">
+        </form>
+      </div>
+
+      <!-- <tr id="product" th:each="p: ${products}">  (quantity=${quantity})  th:field="*{quantity}"
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+        </tr>
+    </table> -->
+    <!-- <h2>Add a product</h2>
+        <form action="/products" method="post">
+            Name: <input type="text" name="name"><br />
+            Price: <input type="number" step="any" name="price"><br />
+            <button type="submit">Add product</button>
+        </form>
+    -->
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+package com.denidove.trading.services;
+
+import com.denidove.trading.entities.CartItem;
+import com.denidove.trading.repositories.ProductRepository;
+import com.denidove.trading.repositories.CartItemRepository;
+import com.denidove.trading.repositories.UserRepository;
+import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CartItemService {
+
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
+
+    public CartItemService(UserRepository userRepository,
+                           ProductRepository productRepository,
+                           CartItemRepository cartItemRepository) {
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.cartItemRepository = cartItemRepository;
+    }
+
+    private final Logger logger = LoggerFactory.getLogger(CartItemService.class);
+
+    public Optional<CartItem> findById(Long id) {
+        return cartItemRepository.findById(id);
+    }
+
+    public List<CartItem> findAll() {
+        return cartItemRepository.findAll();
+    }
+
+    @Transactional // без этого выдавала ошибку: Large Objects may not be used in auto-commit mode
+    public void save(CartItem cartItem, Long productId, Integer quantity) {
+        // управление данного метода перехватывается соответствующим аспектом SavingProductAspect
+        cartItemRepository.save(cartItem);
+    }
+
+}
