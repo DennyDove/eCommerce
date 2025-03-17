@@ -1,5 +1,6 @@
 package com.denidove.trading.entities;
 
+import com.denidove.trading.enums.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,11 @@ public class CartItem {
     @ManyToOne
     private Product product;
 
+    @Column
     private Integer quantity;
+
+    @Column
+    private ProductStatus status;
 
     public CartItem(User user, Product product, Integer quantity) {
         this.user = user;

@@ -1,5 +1,6 @@
 package com.denidove.trading.entities;
 
+import com.denidove.trading.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,15 @@ public class Order {
     @JoinTable(name = "order_product",
                  joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
                  inverseJoinColumns = @JoinColumn(name="cart_item_id", referencedColumnName="id"))
-    private List<CartItem> products;
+    private List<CartItem> cartItem;
 
+    @Column
     private Timestamp timeDate;
+
+    @Column
+    private OrderStatus status;
+
+    public Order(Timestamp timeDate) {
+        this.timeDate = timeDate;
+    }
 }

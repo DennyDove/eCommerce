@@ -1,10 +1,12 @@
 package com.denidove.trading.controllers;
 
+import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.services.CartItemService;
 import com.denidove.trading.services.ProductService;
 import com.denidove.trading.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,7 +23,7 @@ public class ViewController {
         this.cartItemService = cartItemService;
     }
 
-    @RequestMapping("/products")
+    @GetMapping("/products")
     public String viewProducts(Model model) {
         var products = productService.findAll();
         var coins = cartItemService.findAll();
@@ -31,9 +33,10 @@ public class ViewController {
         return "products.html";
     }
 
-    @RequestMapping("/cart")
+    @GetMapping("/cart")
     public String viewCart(Model model) {
-        var coins = cartItemService.findAll();
+        //var coins = cartItemService.findAll();
+        var coins = cartItemService.findAllByUserIdAndStatus();
         model.addAttribute("coins", coins);
         return "cart.html";
     }

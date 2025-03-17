@@ -6,11 +6,6 @@ let name = document.getElementById("name");
 let age = document.getElementById("age");
 let password = document.getElementById("password");
 let regButton = document.getElementById("regButton");
-let buyButton = document.getElementById("buyButton");
-let price = document.getElementById("price");
-
-let prodId = document.getElementById("prodId");
-let prodQty = document.getElementById("prodQty");
 
 async function createUser() {
 
@@ -36,39 +31,39 @@ async function createUser() {
     alert("HTTP error: "+ request.status);
   }
 }
-/*
-async function buyCoin() {
 
-  let id = prodId.value;
-  let quantity = prodQty.value;
+regButton.addEventListener("click", function() {
+    createUser();
+});
 
-  var id = $('#prodId').val();
-  var quantity = $('#prodQty').val();
 
-  var params = new URLSearchParams('id=' + id + '&quantity=' + quantity);
+async function deleteItem(prodId) {
 
-  let request = await fetch("/buycoin", {
-      method: 'POST',
+  // простой вариант DELETE https запроса без тела. Здесь мы вручную вписали параметры в функцию fetch: fetch("/deleteitem?id="+ prodId.....
+  let request = await fetch("/deleteitem?id=" + prodId, {
+      method: 'POST'
+  });
+
+  if(request.ok) {
+    //alert("Монета удалена из корзины");
+    window.location.replace("/cart");
+  } else {
+    alert("HTTP error: "+ request.status);
+  }
+
+  /* вариант DELETE https запроса c телом запроса и объектом класса URLSearchParams.
+  var params = new URLSearchParams('id=' + prodId);
+  let request = await fetch("/deleteitem", {
+      method: 'DELETE',
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"},
       body: params
   });
-
-  if(request.ok) {
-    alert("Монета добавлена в корзину");
-  } else {
-    alert("HTTP error: "+ request.status);
-  }
+  */
 }
 
 buyButton.addEventListener("click", function() {
     buyCoin();
-});
-*/
-
-
-regButton.addEventListener("click", function() {
-    createUser();
 });
 
 /*

@@ -55,19 +55,21 @@ public class MainController {
     }
 
     @PostMapping("/buycoin")
-    public ResponseEntity<Void> buyCoin(@RequestParam(value = "id", required = true) Long id,
-                                        @RequestParam(value = "quantity", required = false) Integer quantity)
-                                throws URISyntaxException {
+    public ResponseEntity<?> buyCoin(@RequestParam(value = "id", required = true) Long id,
+                                        @RequestParam(value = "quantity", required = false) Integer quantity) {
         cartItemService.save(new CartItem(), id, quantity); // product_id
-        URI products = new URI("http://localhost:8080/products");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(products);
-        return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
-
-                //new ResponseEntity<>(HttpStatus.FOUND);
-                //.location(URI.create("http://localhost:8080/products"))
-                //.build();
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .location(URI.create("http://localhost:8080/products"))
+                .build();
     }
+
+    @PostMapping("/deleteitem")
+    //toDo
+    public void deleteCartItem(@RequestParam(value = "id", required = true) Long cartItemId) {
+        cartItemService.delete(cartItemId);
+    }
+
 }
         /* Используем аспектный подход ExceptionControllerAdvice
            Вместо конструкции try-catch:

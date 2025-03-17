@@ -19,19 +19,36 @@
     <div>Монет в корзине: [[ ${coinsNumber} ]] </div>
 
     <div id="content_container">
-      <form>
+    <!--  <form th:action="@{/order}" method="post"> -->
           <div class="itemAdded" th:each="coin: ${coins}">
+
+            <div class="table">
+               <div class="column">
+                   <div class="cart_item"> <img th:src="@{'data: product/jpeg; base64, '+${coin.product.getImageDataBase64()}}" width="33" height="33" border="0">
+                   </div>
+                   <div class="cart_text">  [[ ${coin.product.name} ]] </div>
+                   <div class="cart_text"> Цена: [[ ${coin.product.price} ]] </div>
+                   <div class="cart_text">  Количество: [[ ${coin.quantity} ]] <input type="number" id="qty_input" th:name="quantity" th:value="${coin.quantity}"> </div>
+                   <div class="cart_text">
+                        <input type="image" th:onclick="|deleteItem(${coin.id})|" src="images/cross.png" width="23" height="23" border="0">
+                  </div>
+               </div>
+            </div>
+              <!--
               <table align=left>
                     <tr>
-                      <td> <div class="cart_item"> <img th:src="@{'data: product/jpeg; base64, '+${coin.product.getImageDataBase64()}}" width="33" height="33" border="0"></div> </td>
-                      <td> <div class="cart_text"> [[ ${coin.product.name} ]]</div> </td>
-                      <td> <div class="cart_text"> Цена: [[ ${coin.product.price} ]] </div> </td>
-                      <td> <div class="cart_text">  Количество: [[ ${coin.quantity} ]] <input type="number"id="qty_input" th:name="quantity" th:value="${coin.quantity}"> </div> </td>
+                      <td> <div class="cart_item"> </div> </td>
+                      <td> <div class="cart_text"></div> </td>
+                      <td> <div class="cart_text">  </div> </td>
+                      <td> <div class="cart_text">  </div> </td>
                     </tr>
               </table>
-            </div>
-            <input type="submit" value="Оформить заказ">
-        </form>
+            -->
+           </div>
+           <form th:action="@{/order}" method="post">
+             <input type="submit" value="Оформить заказ">
+           </form>
+
       </div>
 
       <!-- <tr id="product" th:each="p: ${products}">  (quantity=${quantity})  th:field="*{quantity}"

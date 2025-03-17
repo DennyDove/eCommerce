@@ -3,6 +3,7 @@ package com.denidove.trading.aspects;
 import com.denidove.trading.entities.Product;
 import com.denidove.trading.entities.CartItem;
 import com.denidove.trading.entities.User;
+import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.exceptions.ItemQuantityException;
 import com.denidove.trading.repositories.ProductRepository;
 import com.denidove.trading.repositories.CartItemRepository;
@@ -46,16 +47,19 @@ public class SavingProductAspect {
         Integer quantity = (Integer) arguments[2];
         CartItem cartItem = (CartItem) arguments[0]; // arguments[0];
         Product product = productRepository.findById(productId).orElseThrow();
-        int prodQty = product.getQuantity();
-        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndProductId(1L, productId);
+        int prodQty = product.getQuantity(); // определение количества продукта на складе
+        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndProductIdAndStatus(1L, productId, ProductStatus.InCart);
+        // Поиск идет по: userId, productId, ProductStatus.InCart
         // Суть данной конструкции if-else: если продукт cartItem не добален в корзину, то
         // добавить этот продукт через сеттеры и метод save();
         if(productInCart.isEmpty()) {
+            //toDo создать механизм верификации пользователя
             User user = userRepository.findById(1L).get();
             if(quantity > prodQty) throw new ItemQuantityException(); // исключение превышения заказа над имеющимся товаром на складе
             cartItem.setProduct(product);
             cartItem.setUser(user); // добавили id пользователя
             cartItem.setQuantity(quantity);
+            cartItem.setStatus(ProductStatus.InCart);
         } else {
         //  Если данный продукт productSelected уже есть в корзине, то можем менять только количество или удаляем его
             cartItem = productInCart.getFirst();

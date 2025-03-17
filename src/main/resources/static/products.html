@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html" charset="UTF-8">
     <title>Main page</title>
     <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="jquery-3.7.1.min.js" ></script> <!-- подколючение библиотеки jQuery -->
+    <!-- <script src="jquery-3.7.1.min.js" ></script> подколючение библиотеки jQuery -->
 </head>
 <body>
 <h1>Клуб нумизматов</h1>
@@ -13,11 +13,20 @@
 <div id="container">
 <!--  <div id="logo"></div> -->
     <!-- <br /><br /> -->
+    <!--
     <div class="button_holder1">
       <input type="button" id="regButton" value="Регистрация" onclick="window.location.href='registration.html'"/>
+    </div> -->
+    <div class="block_holder1">
+      <div class="profile"> <a href="/registration.html"> <img src="images/profile.png" width="33" height="33" border="0"> </a> </div>
+      <div class="cart"> <a href="/cart"> <img src="images/shopping_cart.png" width="53" height="53" border="0"> </a> </div>
     </div>
 
-    <div>Монет в корзине: [[ ${coinsNumber} ]] </div>
+    <!--
+    <img th:if="${td.status != 'SUBMITTED'}" class="myImage" th:src="@{/assets/images/offbulb.png}" style="width:15px; height:10px;"/>
+    <img th:if="${td.status == 'SUBMITTED'}" class="myImage" th:src="@{/assets/images/redbulb.png}" style="width: 15px; height:10px;"/>
+    <span th:text="${td.status}" />
+    -->
 
     <div id="content_container">
 
@@ -29,7 +38,7 @@
           <div class="item_image">
             <img th:src="@{'data: product/jpeg; base64, '+${product.getImageDataBase64()}}" width="150" height="137" border="0">
           </div>
-          Покупаем
+          Продаем
           <div class="item_price">
             <table align=center>
                 <tr>
@@ -38,10 +47,10 @@
             </table>
           </div>
           <form th:action="@{/buycoin}" method="post">
-            <input type="hidden" id="prodId" th:name="id" th:value="${product.id}">
+            <input type="hidden" th:name="id" th:value="${product.id}">
             <!-- <input type="hidden" th:id="'prodId'+${product.id}" th:name="id" th:value="${product.id}"> -->
-            <input type="number" id="prodQty" th:name="quantity" value="1" placeholder="Количество"></input>
-            <button type="submit" id="buyButton" style="height:27px; width:73px"/>Купить</button>
+            <input type="number" id="qty_input" th:name="quantity" value="1" placeholder="Количество"></input>
+            <button type="submit" style="height:27px; width:73px"/>Купить</button>
           </form>
       </div>
 

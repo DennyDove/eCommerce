@@ -1,6 +1,7 @@
 package com.denidove.trading.services;
 
 import com.denidove.trading.entities.CartItem;
+import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.repositories.ProductRepository;
 import com.denidove.trading.repositories.CartItemRepository;
 import com.denidove.trading.repositories.UserRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional   // Без @Transactional выдавала ошибку: Large Objects may not be used in auto-commit mode
 public class CartItemService {
 
     private final UserRepository userRepository;
@@ -37,10 +39,18 @@ public class CartItemService {
         return cartItemRepository.findAll();
     }
 
-    @Transactional // без этого выдавала ошибку: Large Objects may not be used in auto-commit mode
+    // Метод выдает все добавленные в корзину товары (поиск в БД по: userId и статусу InCart
+    public List<CartItem> findAllByUserIdAndStatus() {
+        //toDo создать механизм верификации пользователя
+        return cartItemRepository.findAllByUserIdAndStatus(1L, ProductStatus.InCart);
+    }
+
     public void save(CartItem cartItem, Long productId, Integer quantity) {
         // управление данного метода перехватывается соответствующим аспектом SavingProductAspect
         cartItemRepository.save(cartItem);
     }
 
+    public void delete(Long cartItemId) {
+        cartItemRepository.deleteByIdAndUserId(cartItemId, 1L);
+    }
 }
