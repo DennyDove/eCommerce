@@ -32,16 +32,18 @@ async function createUser() {
   }
 }
 
+/*
 regButton.addEventListener("click", function() {
     createUser();
 });
+*/
 
 
 async function deleteItem(prodId) {
 
   // простой вариант DELETE https запроса без тела. Здесь мы вручную вписали параметры в функцию fetch: fetch("/deleteitem?id="+ prodId.....
   let request = await fetch("/deleteitem?id=" + prodId, {
-      method: 'POST'
+      method: 'DELETE'
   });
 
   if(request.ok) {
@@ -52,6 +54,8 @@ async function deleteItem(prodId) {
   }
 
   /* вариант DELETE https запроса c телом запроса и объектом класса URLSearchParams.
+  // Однако в DELETE https запросах обычно нет тела, и сервер может из-за этого выдавать ошибку
+  // HttpRequestMethodNotSupportedException: Request method 'DELETE' is not supported
   var params = new URLSearchParams('id=' + prodId);
   let request = await fetch("/deleteitem", {
       method: 'DELETE',
@@ -62,9 +66,34 @@ async function deleteItem(prodId) {
   */
 }
 
-buyButton.addEventListener("click", function() {
-    buyCoin();
-});
+/*
+async function buyCoin(prodId, qty) {
+
+  let request = await fetch("/buycoin?id="+ prodId+"&quantity="+qty,
+    {
+*/
+
+
+/* Функция работает некорректно из-за сложностей с формированием входных параметров в ThymeLeaf
+async function buyCoin(prodId) {
+
+  let request = await fetch("/buycoin?id="+ prodId, "&quantity="+qty,
+    {
+      method: 'POST',
+      headers: {"Content-Type" : "application/x-www-form-urlencoded"},
+      //body: JSON.stringify(obj)
+    });
+
+  if(request.ok) {
+    alert("Coin added");
+    window.location.replace("/products");
+
+  } else {
+    alert("HTTP error: "+ request.status);
+  }
+}
+*/
+
 
 /*
 function priceWithDelim() {

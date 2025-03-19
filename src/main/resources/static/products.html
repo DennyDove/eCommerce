@@ -46,12 +46,18 @@
                 </tr>
             </table>
           </div>
+          <!-- <form th:action="@{/buycoin}" method="post">
+              <input type="number" id="qty_input" th:field="${quantity}" th:name="quantity" value="1" placeholder="Количество"></input>
+         -->
           <form th:action="@{/buycoin}" method="post">
             <input type="hidden" th:name="id" th:value="${product.id}">
             <!-- <input type="hidden" th:id="'prodId'+${product.id}" th:name="id" th:value="${product.id}"> -->
-            <input type="number" id="qty_input" th:name="quantity" value="1" placeholder="Количество"></input>
-            <button type="submit" style="height:27px; width:73px"/>Купить</button>
+            <input type="number" id="qty_input" th:name="quantity" th:value="1" placeholder="Количество"></input>
+            <!-- <button type="submit" style="height:27px; width:73px"/>Купить</button> -->
+            <button th:onclick="submit" style="height:27px; width:73px">Купить</button>
           </form>
+          <!--  <button th:onclick="|buyCoin(${product.id}, ${quantity})|" style="height:27px; width:73px"/> -->
+
       </div>
 
       <!--
@@ -72,5 +78,5 @@
   </div>
 </div>
 
-<!-- <script src="script.js"></script> -->
+<script src="script.js"></script>
 </html>

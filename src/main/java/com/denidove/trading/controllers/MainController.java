@@ -56,7 +56,7 @@ public class MainController {
 
     @PostMapping("/buycoin")
     public ResponseEntity<?> buyCoin(@RequestParam(value = "id", required = true) Long id,
-                                        @RequestParam(value = "quantity", required = false) Integer quantity) {
+                                        @RequestParam(value = "quantity", required = true) Integer quantity) {
         cartItemService.save(new CartItem(), id, quantity); // product_id
         return ResponseEntity
                 .status(HttpStatus.FOUND)
@@ -64,8 +64,7 @@ public class MainController {
                 .build();
     }
 
-    @PostMapping("/deleteitem")
-    //toDo
+    @DeleteMapping("/deleteitem")
     public void deleteCartItem(@RequestParam(value = "id", required = true) Long cartItemId) {
         cartItemService.delete(cartItemId);
     }

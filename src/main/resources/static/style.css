@@ -173,6 +173,7 @@ div.itemAdded {
 	padding-bottom: 17px;
   height: 77px;
 	width: 100%;
+	min-width: 1300px;
 	/* position: relative; */
 	/*top: 23px;
 	left: 23px;*/
@@ -203,6 +204,15 @@ div.cart_text {
 	color: #FF4500;
   /*background-color: #FF1493; */
 	position: relative;
+}
+
+div.cart_drop_button {
+	display: inline-block;
+	position: relative;
+	right: 10px;
+	bottom: 20px;
+	text-align: right;
+	bottom: 0px;
 }
 
 #qty_input {
