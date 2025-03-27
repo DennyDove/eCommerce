@@ -3,7 +3,6 @@
 // При загрузке страницы на localhost потом нажать Ctrl + F5 --> и это должно решить проблему
 
 let name = document.getElementById("name");
-let login = document.getElementById("login");
 let age = document.getElementById("age");
 let password = document.getElementById("password");
 let regButton = document.getElementById("regButton");
@@ -12,12 +11,11 @@ async function createUser() {
 
   let obj = {
     name : name.value,
-    login : login.value,
     age : age.value,
     password : password.value
   };
 
-  let request = await fetch("/adduser",
+  let request = await fetch("/users",
   // Если указать путь URI --> "https", то будет выскакивать ошибка Failed to load resource: net::ERR_SSL_PROTOCOL_ERROR
     {
       method: 'POST',
@@ -27,16 +25,19 @@ async function createUser() {
 
   if(request.ok) {
     alert("User created!");
-    window.location.replace("/products");
+    window.location.replace("index.html");
 
   } else {
     alert("HTTP error: "+ request.status);
   }
 }
 
+/*
 regButton.addEventListener("click", function() {
     createUser();
 });
+*/
+
 
 async function deleteItem(prodId) {
 
@@ -73,13 +74,14 @@ async function buyCoin(prodId, qty) {
 */
 
 
-/* Функция работает некорректно из-за сложностей с формированием входных параметров "prodId", "qty в ThymeLeaf
+/* Функция работает некорректно из-за сложностей с формированием входных параметров "prodId", "qty в ThymeLeaf */
 async function buyCoin(prodId, qty) {
 
   let request = await fetch("/buycoin?id="+ prodId +"&quantity="+qty,
     {
       method: 'POST',
       headers: {"Content-Type" : "application/x-www-form-urlencoded"},
+      //body: JSON.stringify(obj)
     });
 
   if(request.ok) {
@@ -90,12 +92,11 @@ async function buyCoin(prodId, qty) {
     alert("HTTP error: "+ request.status);
   }
 }
-*/
 
 
 /*
 function priceWithDelim() {
-	$('#price').text((this.value).toLocaleString());
+	$('#price').text().toLocaleString());
 };
 
 $('#price')

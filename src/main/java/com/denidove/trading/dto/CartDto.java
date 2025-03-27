@@ -10,12 +10,10 @@ import lombok.NoArgsConstructor;
 
 public class CartDto {
 
-    private Long userId;
     private Long productId;
     private Integer quantity;
 
-    public CartDto(Long userId, Long productId, Integer quantity) {
-        this.userId = userId;
+    public CartDto(Long productId, Integer quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }

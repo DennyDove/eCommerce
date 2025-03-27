@@ -10,20 +10,21 @@
 <h3></h3>
 <!-- Основной контейнер, включающий остальные DIV-->
 <div id="container">
-<!--  <div id="logo"></div> -->
 
-  <div id="block1">
-    <!--
-    <form enctype="multipart/form-data">
-        <label for="pricesFiles">Обновить цены:</label>
-        <input type="file" id="pricesFiles" multiple/>
-    </form>
-    -->
-  </div>
+  <div class="block_holder1"></div>
 
-  <!-- <br /><br /> -->
-  <div id="button_holder1">
-    <input type="button" id="regButton" value="Регистрация" onclick="window.location.href='registration.html'"/>
+  <br /><br />
+  <div id="regform_holder">
+    <div class="regform">
+      <form>
+        <h1> Вход в систему </h1>
+        <p><input type="text" placeholder="Ваш логин" id="login"></p>
+        <p><input type="password" placeholder="Ваш Пароль" id="password"></p>
+      </form>
+      <a href="/registration.html"> Зарегистрироваться </a>
+      <p><button id="loginButton"> Войти </button></p>
+    </div>
+
   </div>
 
   <!--
@@ -34,7 +35,7 @@
 
 </div>
 
-<script src="script.js"></script>
+<script src="script1.js"></script>
 
 </body>
 </html>

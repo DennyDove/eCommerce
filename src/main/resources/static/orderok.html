@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title>Main page</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Клуб нумизматов</h1>
+<h3></h3>
+<!-- Основной контейнер, включающий остальные DIV-->
+<div id="container">
+  <div class="block_holder1"></div>
+    <div id="content_container">
+      Ваш заказ номер [[ ${orderId} ]] принят в работу!
+    </div>
+    <div class="cart_text"> <a href="/products"> Вернуться к покупкам </a> </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

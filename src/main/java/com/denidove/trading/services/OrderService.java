@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -25,19 +26,38 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+
+    }
+
     @Transactional
-    public void save() {
+    public List<Order> findAllByUserId(Long id) {
+        return orderRepository.findAllByUserId(id);
+
+    }
+
+    @Transactional
+    public Optional<Order> findByUserIdAndOrderId(Long userId, Long orderId) {
+        return orderRepository.findByIdAndUserId(orderId, userId);
+                            // найти заказ по id заказа и id пользователя
+    }
+
+
+    @Transactional
+    public Long save(int[] quantity) {
         Order order = new Order(new Timestamp(System.currentTimeMillis()));
         //toDo создать механизм верификации пользователя
         var user = userRepository.findById(1L).get();
-        //List<CartItem> productInCart = cartItemRepository.findAllByUserId(1L);
         List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(1L, ProductStatus.InCart);
+        int i = 0;
         for(CartItem item : productInCart) {
+            item.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
             item.setStatus(ProductStatus.Ordered);
         }
         order.setUser(user);
         order.setCartItem(productInCart);
-        orderRepository.save(order);
+        return orderRepository.save(order).getId();
     }
 
 }

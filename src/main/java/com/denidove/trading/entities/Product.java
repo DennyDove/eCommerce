@@ -23,6 +23,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private Integer quantity;
+    private Integer cartQty;
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
