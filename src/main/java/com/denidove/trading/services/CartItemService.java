@@ -17,13 +17,16 @@ import java.util.Optional;
 @Transactional   // Без @Transactional выдавала ошибку: Large Objects may not be used in auto-commit mode
 public class CartItemService {
 
+    private final UserSessionService userSessionService;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartItemService(UserRepository userRepository,
+    public CartItemService(UserSessionService userSessionService,
+                           UserRepository userRepository,
                            ProductRepository productRepository,
                            CartItemRepository cartItemRepository) {
+        this.userSessionService = userSessionService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
@@ -42,7 +45,7 @@ public class CartItemService {
     // Метод выдает все добавленные в корзину товары (поиск в БД по: userId и статусу InCart
     public List<CartItem> findAllByUserIdAndStatus() {
         //toDo создать механизм верификации пользователя
-        return cartItemRepository.findAllByUserIdAndStatus(1L, ProductStatus.InCart);
+        return cartItemRepository.findAllByUserIdAndStatus(userSessionService.getUserId(), ProductStatus.InCart);
     }
 
     public void save(CartItem cartItem, Long productId, Integer quantity) {
@@ -51,6 +54,6 @@ public class CartItemService {
     }
 
     public void delete(Long cartItemId) {
-        cartItemRepository.deleteByIdAndUserId(cartItemId, 1L);
+        cartItemRepository.deleteByIdAndUserId(cartItemId, userSessionService.getUserId());
     }
 }

@@ -8,6 +8,7 @@ import com.denidove.trading.exceptions.ItemQuantityException;
 import com.denidove.trading.repositories.ProductRepository;
 import com.denidove.trading.repositories.CartItemRepository;
 import com.denidove.trading.repositories.UserRepository;
+import com.denidove.trading.services.UserSessionService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,13 +25,16 @@ import org.springframework.stereotype.Component;
 // в классе CartItemService
 public class SavingProductAspect {
 
+    private final UserSessionService userSessionService;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
-    public SavingProductAspect(UserRepository userRepository,
-                                  ProductRepository productRepository,
-                                  CartItemRepository cartItemRepository) {
+    public SavingProductAspect(UserSessionService userSessionService,
+                               UserRepository userRepository,
+                               ProductRepository productRepository,
+                               CartItemRepository cartItemRepository) {
+        this.userSessionService = userSessionService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
@@ -53,8 +57,8 @@ public class SavingProductAspect {
         // Суть данной конструкции if-else: если продукт cartItem не добален в корзину, то
         // добавить этот продукт через сеттеры и метод save();
         if(productInCart.isEmpty()) {
-            //toDo создать механизм верификации пользователя
-            User user = userRepository.findById(1L).get();
+            //toDo доработать механизм верификации пользователя
+            User user = userRepository.findById(userSessionService.getUserId()).get(); // находим залогинившегося пользователя по userId
             if(quantity > prodQty) throw new ItemQuantityException(); // исключение превышения заказа над имеющимся товаром на складе
             cartItem.setProduct(product);
             cartItem.setUser(user); // добавили id пользователя

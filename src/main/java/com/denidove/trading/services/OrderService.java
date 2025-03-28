@@ -16,11 +16,14 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
+    private final UserSessionService userSessionService;
     private final UserRepository userRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderRepository orderRepository;
 
-    public OrderService(UserRepository userRepository, CartItemRepository cartItemRepository, OrderRepository orderRepository) {
+    public OrderService(UserSessionService userSessionService,
+                        UserRepository userRepository, CartItemRepository cartItemRepository, OrderRepository orderRepository) {
+        this.userSessionService = userSessionService;
         this.userRepository = userRepository;
         this.cartItemRepository = cartItemRepository;
         this.orderRepository = orderRepository;
@@ -40,7 +43,7 @@ public class OrderService {
     @Transactional
     public Optional<Order> findByUserIdAndOrderId(Long userId, Long orderId) {
         return orderRepository.findByIdAndUserId(orderId, userId);
-                            // найти заказ по id заказа и id пользователя
+                            // найти заказ по id заказа и id пользователя для последующего просмотра элементов заказа (CartItem)
     }
 
 
@@ -48,8 +51,8 @@ public class OrderService {
     public Long save(int[] quantity) {
         Order order = new Order(new Timestamp(System.currentTimeMillis()));
         //toDo создать механизм верификации пользователя
-        var user = userRepository.findById(1L).get();
-        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(1L, ProductStatus.InCart);
+        var user = userRepository.findById(userSessionService.getUserId()).get();
+        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(userSessionService.getUserId(), ProductStatus.InCart);
         int i = 0;
         for(CartItem item : productInCart) {
             item.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
