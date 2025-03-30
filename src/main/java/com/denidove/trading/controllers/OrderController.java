@@ -15,21 +15,32 @@ import java.util.Optional;
 @Controller
 public class OrderController {
 
+    private final CartItemService cartItemService;
     private final OrderService orderService;
     private final UserSessionService userSessionService;
 
-    public OrderController(OrderService orderService,
+    public OrderController(CartItemService cartItemService,
+                           OrderService orderService,
                            UserSessionService userSessionService) {
         this.orderService = orderService;
         this.userSessionService = userSessionService;
+        this.cartItemService = cartItemService;
     }
 
     @GetMapping("/orders")
     public String getOrders(Model model,
                             @RequestParam(value = "user", required = false) Long userId) {
         List<Order> orders = orderService.findAllByUserId(userSessionService.getUserId());
+        int coinsInCart = cartItemService.findAllByUserIdAndStatus().size();
+
+        Boolean loginStatus = userSessionService.getLoginStatus();
+        String userInit = "";
+        if(loginStatus) userInit = userSessionService.getUserInit();
+
         model.addAttribute("userName", userSessionService.getUserName());
         model.addAttribute("orders", orders);
+        model.addAttribute("coinsInCart", coinsInCart);
+        model.addAttribute("userInit", userInit);
         return "user_orders.html";
     }
 
@@ -37,8 +48,16 @@ public class OrderController {
     public String getOrders(Model model,
                             @RequestParam(value = "user", required = false) Long userId,
                             @RequestParam(value = "order", required = true) Long orderId) {
+        int coinsInCart = cartItemService.findAllByUserIdAndStatus().size();
         Order order = orderService.findByUserIdAndOrderId(userSessionService.getUserId(), orderId).get();
         List<CartItem> coins = order.getCartItem();
+
+        Boolean loginStatus = userSessionService.getLoginStatus();
+        String userInit = "";
+        if(loginStatus) userInit = userSessionService.getUserInit();
+
+        model.addAttribute("coinsInCart", coinsInCart);
+        model.addAttribute("userInit", userInit);
         model.addAttribute("order", order);
         model.addAttribute("coins", coins);
         return "order_details.html";

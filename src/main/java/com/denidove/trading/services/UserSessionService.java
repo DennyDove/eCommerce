@@ -17,6 +17,7 @@ public class UserSessionService {
     private Boolean loginStatus = false;
     private Long userId;
     private String userName;
+    private String userInit;  // первая буква имени
 
     public UserSessionService(UserRepository userRepository) {
         this.userRepository = userRepository;

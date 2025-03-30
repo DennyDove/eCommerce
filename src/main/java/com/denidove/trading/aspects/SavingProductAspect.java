@@ -47,6 +47,7 @@ public class SavingProductAspect {
         String methodName = joinPoint.getSignature().getName(); // получение имени метода (в информационных целях)
         Object [] arguments = joinPoint.getArgs(); // получение аргументов перехватываемого метода
 
+        Long userId = userSessionService.getUserId();
         Long productId = (Long) arguments[1];
         Integer quantity = (Integer) arguments[2];
         CartItem cartItem = (CartItem) arguments[0]; // arguments[0];
@@ -58,7 +59,7 @@ public class SavingProductAspect {
         // добавить этот продукт через сеттеры и метод save();
         if(productInCart.isEmpty()) {
             //toDo доработать механизм верификации пользователя
-            User user = userRepository.findById(userSessionService.getUserId()).get(); // находим залогинившегося пользователя по userId
+            User user = userRepository.findById(userId).get(); // находим залогинившегося пользователя по userId
             if(quantity > prodQty) throw new ItemQuantityException(); // исключение превышения заказа над имеющимся товаром на складе
             cartItem.setProduct(product);
             cartItem.setUser(user); // добавили id пользователя

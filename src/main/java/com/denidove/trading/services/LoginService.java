@@ -25,6 +25,7 @@ public class LoginService {
             userSessionService.setLoginStatus(true);
             userSessionService.setUserId(user.getId());
             userSessionService.setUserName(user.getName());
+            userSessionService.setUserInit(String.valueOf((user.getName().charAt(0)))); // получаем и сохраняем первую букву имени
         }
     }
 }

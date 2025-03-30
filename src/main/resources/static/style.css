@@ -48,7 +48,7 @@ span.red_text {
 }
 
 a { /* установка малинового цвета для всех гиперссылок */
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: normal;
 	color: #FF0066;
 }
@@ -64,6 +64,7 @@ h1 {
 }
 h2 {
 	font-size: 16px;
+		color: #800080;
 }
 h3 {
 	font-size: 12px;
@@ -136,6 +137,26 @@ div.profile {
 	display: inline-block;
 	position: relative;
 	bottom: 10px;
+}
+
+/* блок для корректного отображения кружочка с буквой имени пользователя*/
+div.profile_user {
+	display: inline-block;
+	position: relative;
+	bottom: 3px;
+	z-index: 2;
+}
+
+div.auth_user {
+	position: relative;
+	margin: auto;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bolder;
+	color: #8A2BE2;
+	/*left: 0px;*/
+	bottom: 16px;
+	z-index: 1;
 }
 
 div.item_card {
