@@ -1,6 +1,8 @@
 package com.denidove.trading.services;
 
+import com.denidove.trading.dto.CartItemDto;
 import com.denidove.trading.entities.CartItem;
+import com.denidove.trading.entities.Product;
 import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.repositories.ProductRepository;
 import com.denidove.trading.repositories.CartItemRepository;
@@ -18,16 +20,13 @@ import java.util.Optional;
 public class CartItemService {
 
     private final UserSessionService userSessionService;
-    private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
 
     public CartItemService(UserSessionService userSessionService,
-                           UserRepository userRepository,
                            ProductRepository productRepository,
                            CartItemRepository cartItemRepository) {
         this.userSessionService = userSessionService;
-        this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemRepository = cartItemRepository;
     }
@@ -51,6 +50,13 @@ public class CartItemService {
     public void save(CartItem cartItem, Long productId, Integer quantity) {
         // управление данного метода перехватывается соответствующим аспектом SavingProductAspect
         cartItemRepository.save(cartItem);
+    }
+
+    //toDo вынести в отдельный сервисный класс?
+    public void saveToDto(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        CartItemDto cartItemDto = new CartItemDto(product, quantity);
+        userSessionService.getCartItemDtoList().add(cartItemDto);
     }
 
     public void delete(Long cartItemId) {

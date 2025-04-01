@@ -50,19 +50,20 @@ public class SavingProductAspect {
         Long userId = userSessionService.getUserId();
         Long productId = (Long) arguments[1];
         Integer quantity = (Integer) arguments[2];
-        CartItem cartItem = (CartItem) arguments[0]; // arguments[0];
+        CartItem cartItem = (CartItem) arguments[0];
         Product product = productRepository.findById(productId).orElseThrow();
         int prodQty = product.getQuantity(); // определение количества продукта на складе
-        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndProductIdAndStatus(1L, productId, ProductStatus.InCart);
+        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndProductIdAndStatus(userId, productId, ProductStatus.InCart);
         // Поиск идет по: userId, productId, ProductStatus.InCart
         // Суть данной конструкции if-else: если продукт cartItem не добален в корзину, то
         // добавить этот продукт через сеттеры и метод save();
+
         if(productInCart.isEmpty()) {
             //toDo доработать механизм верификации пользователя
             User user = userRepository.findById(userId).get(); // находим залогинившегося пользователя по userId
             if(quantity > prodQty) throw new ItemQuantityException(); // исключение превышения заказа над имеющимся товаром на складе
             cartItem.setProduct(product);
-            cartItem.setUser(user); // добавили id пользователя
+            cartItem.setUser(user); // добавили id пользователя либо временного пользователя
             cartItem.setQuantity(quantity);
             cartItem.setStatus(ProductStatus.InCart);
         } else {

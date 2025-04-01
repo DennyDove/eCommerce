@@ -26,7 +26,7 @@ public class AuthController {
     @PostMapping("/login")
     public void auth(@RequestBody LoginDto loginDto) {
         loginService.loginCheck(loginDto);
-        boolean login = userSessionService.getLoginStatus();
+        boolean login = userSessionService.getAuthStatus();
         if(login) {
             log.info("User authentication successfull.");
         } else {
@@ -34,15 +34,4 @@ public class AuthController {
         }
 
     }
-
-    /*
-    public ResponseEntity<?> addUser(@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .location(URI.create("http://localhost:8080/products"))
-                .build();
-    }
-    */
-
 }

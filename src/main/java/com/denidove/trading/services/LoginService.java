@@ -22,7 +22,7 @@ public class LoginService {
     public void loginCheck (LoginDto loginDto) {
         User user = userRepository.findUserByLogin(loginDto.getLogin()).get();
         if(loginDto.getPassword().equals(user.getPassword())) {
-            userSessionService.setLoginStatus(true);
+            userSessionService.setAuthStatus(true);
             userSessionService.setUserId(user.getId());
             userSessionService.setUserName(user.getName());
             userSessionService.setUserInit(String.valueOf((user.getName().charAt(0)))); // получаем и сохраняем первую букву имени

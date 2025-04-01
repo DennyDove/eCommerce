@@ -15,16 +15,16 @@ import java.util.Optional;
 @Controller
 public class OrderController {
 
-    private final CartItemService cartItemService;
     private final OrderService orderService;
+    private final CartItemService cartItemService;
     private final UserSessionService userSessionService;
 
-    public OrderController(CartItemService cartItemService,
-                           OrderService orderService,
+    public OrderController(OrderService orderService,
+                           CartItemService cartItemService,
                            UserSessionService userSessionService) {
         this.orderService = orderService;
-        this.userSessionService = userSessionService;
         this.cartItemService = cartItemService;
+        this.userSessionService = userSessionService;
     }
 
     @GetMapping("/orders")
@@ -33,7 +33,8 @@ public class OrderController {
         List<Order> orders = orderService.findAllByUserId(userSessionService.getUserId());
         int coinsInCart = cartItemService.findAllByUserIdAndStatus().size();
 
-        Boolean loginStatus = userSessionService.getLoginStatus();
+        //toDo оптимизировать повторяющийся код (наверное вынести в отдельный класс)
+        Boolean loginStatus = userSessionService.getAuthStatus();
         String userInit = "";
         if(loginStatus) userInit = userSessionService.getUserInit();
 
@@ -45,14 +46,15 @@ public class OrderController {
     }
 
     @GetMapping("/orderitems")
-    public String getOrders(Model model,
+    public String getOrderDetails(Model model,
                             @RequestParam(value = "user", required = false) Long userId,
                             @RequestParam(value = "order", required = true) Long orderId) {
         int coinsInCart = cartItemService.findAllByUserIdAndStatus().size();
         Order order = orderService.findByUserIdAndOrderId(userSessionService.getUserId(), orderId).get();
         List<CartItem> coins = order.getCartItem();
 
-        Boolean loginStatus = userSessionService.getLoginStatus();
+        //toDo оптимизировать повторяющийся код (наверное вынести в отдельный класс)
+        Boolean loginStatus = userSessionService.getAuthStatus();
         String userInit = "";
         if(loginStatus) userInit = userSessionService.getUserInit();
 
@@ -64,11 +66,26 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String makeOrder(Model model,
+    public String saveOrder(Model model,
                             @RequestParam(value = "quantity", required = true) int[] quantity) {
-        Long orderId = orderService.save(quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
-        model.addAttribute("orderId", orderId);
-        return "orderok.html";
+        Boolean authStatus = userSessionService.getAuthStatus();
+        if(authStatus) {
+            var unauthorizedUserCart = userSessionService.getCartItemDtoList();
+            // Условие, если неавторизованный пользователь не добавлял до этого товар в корзину
+            if(unauthorizedUserCart.isEmpty()) {
+                Long orderId = orderService.save(quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
+                model.addAttribute("orderId", orderId);
+                return "orderok.html";
+            } else {
+                // Условие, если неавторизованный пользователь уже добавлял до этого товар в корзину
+                Long orderId = orderService.saveUnautorized(quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
+                model.addAttribute("orderId", orderId);
+                return "orderok.html";
+            }
+        }
+        else {
+            return "login.html";
+        }
     }
 }
 
