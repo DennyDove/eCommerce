@@ -49,49 +49,11 @@ public class OrderService {
     }
 
     // Метод для записи заказа в БД из корзины авторизованного пользователя
+    // Управление данного метода перехватывается соответствующим аспектом SavingOrderAspect
     @Transactional
-    public Long save(int[] quantity) {
-        Order order = new Order(new Timestamp(System.currentTimeMillis()));
-        //toDo создать механизм верификации пользователя
-        Long userId = userSessionService.getUserId();
-        var user = userRepository.findById(userId).get();
-        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(userId, ProductStatus.InCart);
-        int i = 0;
-        for(CartItem item : productInCart) {
-            item.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
-            item.setStatus(ProductStatus.Ordered);
-        }
-        order.setUser(user);
-        order.setCartItem(productInCart);
+    public Long save(Order order, int[] quantity) {
         return orderRepository.save(order).getId();
     }
-
-    // Метод для записи заказа в БД из корзины неавторизованного пользователя, который потом авторизовался
-    @Transactional
-    public Long saveUnautorized(int[] quantity) {
-        Order order = new Order(new Timestamp(System.currentTimeMillis()));
-        //toDo создать механизм верификации пользователя
-        Long userId = userSessionService.getUserId();
-        var user = userRepository.findById(userId).get();
-
-        // Создаем новый список CartItem чтобы в него потом занести элементы из productInCart (в цикле foreach)
-        List<CartItem> productForPersist = new ArrayList<>();
-        List<CartItemDto> productInCart = userSessionService.getCartItemDtoList();
-        int i = 0;
-        for(CartItemDto item : productInCart) {
-            CartItem cartItem = new CartItem();
-            cartItem.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
-            cartItem.setUser(user);
-            cartItem.setProduct(item.getProduct());
-            cartItem.setStatus(ProductStatus.Ordered);
-            productForPersist.add(cartItem); // добавляем элемент в коллекцию, которую потом будем заносить в БД
-        }
-        order.setUser(user);
-        order.setCartItem(productForPersist);
-        userSessionService.getCartItemDtoList().clear(); // очищаем корзину
-        return orderRepository.save(order).getId();
-    }
-
 }
 
 

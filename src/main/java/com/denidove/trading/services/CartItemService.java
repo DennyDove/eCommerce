@@ -47,8 +47,8 @@ public class CartItemService {
         return cartItemRepository.findAllByUserIdAndStatus(userSessionService.getUserId(), ProductStatus.InCart);
     }
 
+    // Управление данного метода перехватывается соответствующим аспектом SavingProductAspect
     public void save(CartItem cartItem, Long productId, Integer quantity) {
-        // управление данного метода перехватывается соответствующим аспектом SavingProductAspect
         cartItemRepository.save(cartItem);
     }
 

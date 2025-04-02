@@ -68,21 +68,14 @@ public class OrderController {
     @PostMapping("/order")
     public String saveOrder(Model model,
                             @RequestParam(value = "quantity", required = true) int[] quantity) {
-        Boolean authStatus = userSessionService.getAuthStatus();
+        Boolean authStatus = userSessionService.getAuthStatus(); // Проверка авторизации
+        // Сценарий для авторизовавшихся пользователей
         if(authStatus) {
-            var unauthorizedUserCart = userSessionService.getCartItemDtoList();
-            // Условие, если неавторизованный пользователь не добавлял до этого товар в корзину
-            if(unauthorizedUserCart.isEmpty()) {
-                Long orderId = orderService.save(quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
+                Long orderId = orderService.save(new Order(), quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
                 model.addAttribute("orderId", orderId);
                 return "orderok.html";
-            } else {
-                // Условие, если неавторизованный пользователь уже добавлял до этого товар в корзину
-                Long orderId = orderService.saveUnautorized(quantity); // сохраняем quantity[i] для каждого i-го товара, выбранного в корзине
-                model.addAttribute("orderId", orderId);
-                return "orderok.html";
-            }
         }
+        // Сценарий для неавторизовавшихся пользователей
         else {
             return "login.html";
         }
