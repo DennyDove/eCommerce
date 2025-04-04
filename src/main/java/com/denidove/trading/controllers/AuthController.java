@@ -1,7 +1,9 @@
 package com.denidove.trading.controllers;
 
 import com.denidove.trading.TradingApplication;
+import com.denidove.trading.dto.CartItemDto;
 import com.denidove.trading.dto.LoginDto;
+import com.denidove.trading.entities.User;
 import com.denidove.trading.services.LoginService;
 import com.denidove.trading.services.UserSessionService;
 import org.slf4j.Logger;
@@ -9,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
 
 @RestController
 public class AuthController {
@@ -25,9 +29,15 @@ public class AuthController {
 
     @PostMapping("/login")
     public void auth(@RequestBody LoginDto loginDto) {
-        loginService.loginCheck(loginDto);
+        // Проверка логина, пароля и одновременно запись пользователя в переменную user;
+        User user = loginService.loginCheck(loginDto);
         boolean login = userSessionService.getAuthStatus();
         if(login) {
+            HashMap<Long, CartItemDto> productInCartDto = userSessionService.getCartItemDtoList();
+            if(!productInCartDto.isEmpty()) {
+                loginService.persistProductInCart(productInCartDto, user);
+            }
+
             log.info("User authentication successfull.");
         } else {
             log.info("Authentication failed.");

@@ -67,7 +67,7 @@ public class SavingProductAspect {
             cartItem.setQuantity(quantity);
             cartItem.setStatus(ProductStatus.InCart);
         } else {
-        //  Если данный продукт productSelected уже есть в корзине, то можем менять только количество или удаляем его
+        //  Если данный продукт CartItem уже есть в корзине, то можем менять только количество или удаляем его
             cartItem = productInCart.getFirst();
             quantity+= cartItem.getQuantity();
             if(quantity > prodQty) throw new ItemQuantityException(); // исключение превышения заказа над имеющимся товаром на складе

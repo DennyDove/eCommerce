@@ -52,11 +52,10 @@ public class CartItemService {
         cartItemRepository.save(cartItem);
     }
 
-    //toDo вынести в отдельный сервисный класс?
-    public void saveToDto(Long productId, Integer quantity) {
-        Product product = productRepository.findById(productId).orElseThrow();
-        CartItemDto cartItemDto = new CartItemDto(product, quantity);
-        userSessionService.getCartItemDtoList().add(cartItemDto);
+    // Добавление товара в корзину неавторизованным пользователем.
+    // Товар добавляем во временную коллекцию CartItemDtoList
+    public void saveToDto(CartItemDto cartItemDto, Long productId, Integer quantity) {
+        userSessionService.getCartItemDtoList().put(productId, cartItemDto);
     }
 
     public void delete(Long cartItemId) {

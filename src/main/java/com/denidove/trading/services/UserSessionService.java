@@ -7,13 +7,14 @@ import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 @Getter
 @Setter
 @Service
 @SessionScope
+// Сервисный класс для операций с пользователем в рамках сессии.
+// То есть состояние(значения полей) будет сохраняться в течение сессии (@SessionScope)
 public class UserSessionService {
 
     private final UserRepository userRepository;
@@ -23,7 +24,7 @@ public class UserSessionService {
     private String userName;
     private String userInit;  // первая буква имени
 
-    private List<CartItemDto> cartItemDtoList = new ArrayList<>();
+    private HashMap<Long, CartItemDto> cartItemDtoList = new HashMap<>();
 
     public UserSessionService(UserRepository userRepository) {
         this.userRepository = userRepository;

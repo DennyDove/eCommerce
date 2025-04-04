@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -53,6 +51,16 @@ public class OrderService {
     @Transactional
     public Long save(Order order, int[] quantity) {
         return orderRepository.save(order).getId();
+    }
+
+    // Просто сохраняем состояние корзины неавторизованного пользователя (по quantity)
+    public void saveToDto(int[] quantity) {
+        HashMap<Long, CartItemDto> productInCart = userSessionService.getCartItemDtoList();
+        int i = 0;
+        // Ниже приведен синтаксическая структура для перебора HashMap в цикле for-each
+        for(Map.Entry<Long, CartItemDto> item : productInCart.entrySet()) {
+            item.getValue().setQuantity(quantity[i++]); // устанавливаем quantity для каждого i-го товара, выбранного в корзине
+        }
     }
 }
 

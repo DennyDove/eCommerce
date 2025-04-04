@@ -20,7 +20,9 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Aspect
@@ -55,43 +57,18 @@ public class SavingOrderAspect {
         //toDo создать механизм верификации пользователя
         Long userId = userSessionService.getUserId();
         var user = userRepository.findById(userId).get();
-        var unauthorizedUserCart = userSessionService.getCartItemDtoList();
 
-        // Если неавторизованный пользователь не добавлял ранее товар в корзину, тогда выполняется следующий блок:
-        if(unauthorizedUserCart.isEmpty()) {
-            List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(userId, ProductStatus.InCart);
-            int i = 0;
-            for (CartItem item : productInCart) {
-                item.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
-                item.setStatus(ProductStatus.Ordered);
-            }
-            order.setUser(user);
-            order.setCartItem(productInCart);
-
-            Object[] newArguments = {order, quantity};
-            joinPoint.proceed(newArguments); // запуск метода save(Order order, int[] quantity) с новыми аргументами
-
-        } else {
-            // Если неавторизованный пользователь уже добавлял ранее товар в корзину:
-            // Создаем новый список CartItem чтобы в него потом занести элементы из productInCart (в цикле foreach)
-            List<CartItem> productToPersist = new ArrayList<>();
-            List<CartItemDto> productInCart = userSessionService.getCartItemDtoList();
-            int i = 0;
-            for(CartItemDto item : productInCart) {
-                CartItem cartItem = new CartItem();
-                cartItem.setQuantity(item.getQuantity()); // устанавливаем quantity для каждого i-го товара, выбранного в корзине
-                cartItem.setUser(user);
-                cartItem.setProduct(item.getProduct());
-                cartItem.setStatus(ProductStatus.Ordered);
-                productToPersist.add(cartItem); // добавляем элемент в коллекцию, которую потом будем заносить в БД
-            }
-            order.setUser(user);
-            order.setCartItem(productToPersist);
-            userSessionService.getCartItemDtoList().clear(); // очищаем корзину
-
-            Object[] newArguments = {order, quantity};
-            joinPoint.proceed(newArguments); // запуск метода save(Order order, int[] quantity) с новыми аргументами
+        List<CartItem> productInCart = cartItemRepository.findAllByUserIdAndStatus(userId, ProductStatus.InCart);
+        int i = 0;
+        for (CartItem item : productInCart) {
+            item.setQuantity(quantity[i++]); // устанавливаем quantity[i] для каждого i-го товара, выбранного в корзине
+            item.setStatus(ProductStatus.Ordered);
         }
+        order.setUser(user);
+        order.setCartItem(productInCart);
+
+        Object[] newArguments = {order, quantity};
+        joinPoint.proceed(newArguments); // запуск метода save(Order order, int[] quantity) с новыми аргументами
     }
 }
 

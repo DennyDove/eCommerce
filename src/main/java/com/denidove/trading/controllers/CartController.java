@@ -1,5 +1,6 @@
 package com.denidove.trading.controllers;
 
+import com.denidove.trading.dto.CartItemDto;
 import com.denidove.trading.entities.CartItem;
 import com.denidove.trading.services.CartItemService;
 import com.denidove.trading.services.UserSessionService;
@@ -21,6 +22,7 @@ public class CartController {
         this.userSessionService = userSessionService;
     }
 
+    // Добавление товара в корзину
     @PostMapping("/buycoin")
     public ResponseEntity<?> buyCoin(@RequestParam(value = "id", required = true) Long id,
                                      @RequestParam(value = "quantity", required = true) Integer quantity) {
@@ -32,7 +34,7 @@ public class CartController {
             cartItemService.save(new CartItem(), id, quantity); // product_id
         } else {
             // если пользователь неавторизован, тогда товары добавляем во временную коллецию List<CartItemDto> в классе UserSessionService
-            cartItemService.saveToDto(id, quantity);
+            cartItemService.saveToDto(new CartItemDto(), id, quantity);
         }
         return ResponseEntity
                 .status(HttpStatus.FOUND)

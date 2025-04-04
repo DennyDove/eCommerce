@@ -27,6 +27,7 @@ public class OrderController {
         this.userSessionService = userSessionService;
     }
 
+    // Просмотр истории заказов авторизованного пользователя
     @GetMapping("/orders")
     public String getOrders(Model model,
                             @RequestParam(value = "user", required = false) Long userId) {
@@ -41,10 +42,11 @@ public class OrderController {
         model.addAttribute("userName", userSessionService.getUserName());
         model.addAttribute("orders", orders);
         model.addAttribute("coinsInCart", coinsInCart);
-        model.addAttribute("userInit", userInit);
+        model.addAttribute("userInit", userInit);  // первая буква имени
         return "user_orders.html";
     }
 
+    // Просмотр деталей заказа
     @GetMapping("/orderitems")
     public String getOrderDetails(Model model,
                             @RequestParam(value = "user", required = false) Long userId,
@@ -59,7 +61,7 @@ public class OrderController {
         if(loginStatus) userInit = userSessionService.getUserInit();
 
         model.addAttribute("coinsInCart", coinsInCart);
-        model.addAttribute("userInit", userInit);
+        model.addAttribute("userInit", userInit); // первая буква имени
         model.addAttribute("order", order);
         model.addAttribute("coins", coins);
         return "order_details.html";
@@ -77,6 +79,8 @@ public class OrderController {
         }
         // Сценарий для неавторизовавшихся пользователей
         else {
+            // Просто сохраняем состояние корзины неавторизованного пользователя (по quantity)
+            orderService.saveToDto(quantity);
             return "login.html";
         }
     }
