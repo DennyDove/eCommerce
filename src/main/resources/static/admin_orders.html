@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title>Main page</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h3></h3>
+<!-- Основной контейнер, включающий остальные DIV-->
+<div id="container">
+
+  <div class="header">
+    <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
+    <div class="block_holder1">
+      <div class="profile_user"> <a href="/userprofile"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
+    </div>
+
+    <div id="content_container">
+        <div class="user_menu"> <h2>Активные заказы пользователей</h2> </div>
+          <form th:action="@{/adminaction}" method="post">
+            <div class="itemAdded" th:each="order: ${orders}">
+              <div class="table">
+                 <div class="column">
+                     <div class="cart_text"> <a th:href="@{'/orderitemsadm?user='+ ${order.user.id} + '&order=' + ${order.id}}"> Заказ номер [[ ${order.id} ]] </a> </div>
+                     <!-- <div class="cart_text"> <a th:href="@{'/orderitems?user='+ ${order.user.id} + '&order=' + ${order.id}}"> Заказ номер [[ ${order.id} ]] </a> </div>  -->
+                     <div class="cart_text"> [[ ${order.user.name} ]] </div>
+                     <div class="cart_text"> [[ ${order.timeDate} ]] </div>
+                     <div class="cart_text"> Статус: [[ ${order.status.title} ]]
+                       <!--
+                       *** тег <select> и Thymeleaf сложно состыкоывть в данном случае
+                       <label for="status_change">Изменить статус:</label>
+                       <select id="status_change" field="*{status}" >
+                         <option th:name="status" th:value="${order.status}">[[ ${order.status.title} ]]</option>
+                         <option th:name="status" th:value="InWork">в работе</option>
+                         <option th:name="status" th:value="Delivered">доставлено</option>
+                         <option th:name="status" th:value="Archive">в архиве</option>
+                       </select>
+                     -->
+                     </div>
+                     <div class="cart_text">
+                    </div>
+                 </div>
+              </div>
+             </div>
+          <input type="submit" value="Оформить заказ в работу">
+         </form>
+
+      </div>
+
+      <!-- <tr id="product" th:each="p: ${products}">  (quantity=${quantity})  th:field="*{quantity}"
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+        </tr>
+    </table> -->
+    <!-- <h2>Add a product</h2>
+        <form action="/products" method="post">
+            Name: <input type="text" name="name"><br />
+            Price: <input type="number" step="any" name="price"><br />
+            <button type="submit">Add product</button>
+        </form>
+    -->
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

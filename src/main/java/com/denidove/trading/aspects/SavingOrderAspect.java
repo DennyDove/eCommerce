@@ -5,6 +5,7 @@ import com.denidove.trading.entities.CartItem;
 import com.denidove.trading.entities.Order;
 import com.denidove.trading.entities.Product;
 import com.denidove.trading.entities.User;
+import com.denidove.trading.enums.OrderStatus;
 import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.exceptions.ItemQuantityException;
 import com.denidove.trading.repositories.CartItemRepository;
@@ -66,6 +67,7 @@ public class SavingOrderAspect {
         }
         order.setUser(user);
         order.setCartItem(productInCart);
+        order.setStatus(OrderStatus.InWork);
 
         Object[] newArguments = {order, quantity};
         joinPoint.proceed(newArguments); // запуск метода save(Order order, int[] quantity) с новыми аргументами

@@ -113,17 +113,27 @@ div.block_logo {
 	line-height: 0px;
 }*/
 
-div.block_holder1 {
-	display: inline-block;
-	vertical-align: top;
+div.header {
+	position: relative;
 	width: 100%;
-	height: 53px;
-	text-align: right;
-	line-height: 0px;
-	background-color: #99CCCC;
-	/*background-image: url(images/coins1.jpg);
-	background-repeat: repeat-x;*/
+	height: 233px;
+}
 
+div.block_logo {
+	display: inline-block;
+}
+
+div.block_holder1 {
+	position: absolute;
+	display: inline-block;
+	width: auto;
+	height: 53px;
+
+	right: 10px;
+	line-height: 0px;
+	/*background-color: #99CCCC;*/
+	/*background-image: url(images/chain1_bkd.png);
+	background-repeat: repeat-x;*/
 }
 
 div.cart {
@@ -145,6 +155,12 @@ div.profile_user {
 	position: relative;
 	bottom: 3px;
 	z-index: 2;
+}
+
+div.user_menu {
+	display: inline-block;
+	position: relative;
+	left: 33px;
 }
 
 div.auth_user {

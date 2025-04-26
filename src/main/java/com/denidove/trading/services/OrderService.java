@@ -3,6 +3,7 @@ package com.denidove.trading.services;
 import com.denidove.trading.dto.CartItemDto;
 import com.denidove.trading.entities.CartItem;
 import com.denidove.trading.entities.Order;
+import com.denidove.trading.enums.OrderStatus;
 import com.denidove.trading.enums.ProductStatus;
 import com.denidove.trading.repositories.CartItemRepository;
 import com.denidove.trading.repositories.OrderRepository;
@@ -31,7 +32,11 @@ public class OrderService {
 
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
 
+    @Transactional
+    public List<Order> findAllByStatus(OrderStatus status) {
+        return orderRepository.findAllByStatus(status);
     }
 
     @Transactional
@@ -61,6 +66,17 @@ public class OrderService {
         for(Map.Entry<Long, CartItemDto> item : productInCart.entrySet()) {
             item.getValue().setQuantity(quantity[i++]); // устанавливаем quantity для каждого i-го товара, выбранного в корзине
         }
+    }
+
+    //toDo
+    @Transactional
+    public void saveAdmin(Order order, OrderStatus[] status) {
+        List<Order> orders = orderRepository.findAllByStatus(OrderStatus.InWork);
+        int i = 0;
+        for(Order o : orders) {
+            o.setStatus(status[i]);
+        }
+        orderRepository.saveAll(orders);
     }
 }
 

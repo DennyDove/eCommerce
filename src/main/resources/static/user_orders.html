@@ -6,26 +6,27 @@
 <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Клуб нумизматов</h1>
 <h3></h3>
 <!-- Основной контейнер, включающий остальные DIV-->
 <div id="container">
 
-  <div class="block_holder1">
-    <div class="profile_user"> <a href="/orders"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
-    <div class="cart"> <a href="/cart"> <img th:if="${coinsInCart == 0}" src="images/shopping_cart.png" width="53" height="53" border="0">
-                                        <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
-  </div>
+  <div class="header">
+    <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
+    <div class="block_holder1">
+      <div class="profile_user"> <a href="/userprofile"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
+      <div class="cart"> <a href="/cart"> <img th:if="${coinsInCart == 0}" src="images/shopping_cart.png" width="53" height="53" border="0">
+                                          <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
+    </div>
 
     <div id="content_container">
-        <div> <h2>Заказы пользователя [[ ${userName} ]]</h2> </div>
+        <div class="user_menu"> <h2>Заказы пользователя [[ ${userName} ]]</h2> </div>
 
           <div class="itemAdded" th:each="order: ${orders}">
             <div class="table">
                <div class="column">
                    <div class="cart_text"> <a th:href="@{'/orderitems'(order=${order.id})}"> Заказ номер [[ ${order.id} ]] </a> </div>
                    <div class="cart_text"> [[ ${order.timeDate} ]] </div>
-                   <div class="cart_text">  Статус: [[ ${order.status} ]] </div>
+                   <div class="cart_text">  Статус: [[ ${order.status.title} ]] </div>
                    <div class="cart_text">
                   </div>
                </div>

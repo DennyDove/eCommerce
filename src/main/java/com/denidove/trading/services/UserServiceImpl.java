@@ -24,7 +24,11 @@ public class UserServiceImpl implements UserService {
 
         Role userRole = roleRepository.getReferenceById(1);
         user.setRole(userRole);
-
         userRepository.save(user);
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+
     }
 }

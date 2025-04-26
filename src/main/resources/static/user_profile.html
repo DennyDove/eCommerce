@@ -9,6 +9,7 @@
 <h3></h3>
 <!-- Основной контейнер, включающий остальные DIV-->
 <div id="container">
+
   <div class="header">
     <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
     <div class="block_holder1">
@@ -17,23 +18,16 @@
                                           <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
     </div>
 
-  <div> <h2>Состав заказа №[[ ${order.id} ]]</h2> </div>
-
     <div id="content_container">
-          <div class="itemAdded" th:each="coin: ${coins}">
-
-            <div class="table">
-               <div class="column">
-                   <div class="cart_item"> <img th:src="@{'data: product/jpeg; base64, '+${coin.product.getImageDataBase64()}}" width="53" height="53" border="0">
-                   </div>
-                   <div class="cart_text">  [[ ${coin.product.name} ]] </div>
-                   <div class="cart_text"> Цена: [[ ${coin.product.price} ]] </div>
-                   <div class="cart_text">  Количество: [[ ${coin.quantity} ]] </div>
-               </div>
-            </div>
-
-           </div>
-      </div>
+        <div class="user_menu">
+            <h2>[[ ${name} ]],  доброго времени суток!</h2>
+            <a href="/userdetails"> Профиль пользователя </a>
+            <br>
+            <a href="/orders"> История заказов </a>
+            <br>
+            <a href="/logout"> Выход </a>
+        </div>
+    </div>
 
       <!-- <tr id="product" th:each="p: ${products}">  (quantity=${quantity})  th:field="*{quantity}"
             <td th:text="${p.name}"></td>

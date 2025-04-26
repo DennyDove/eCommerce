@@ -8,10 +8,14 @@ import com.denidove.trading.services.LoginService;
 import com.denidove.trading.services.UserSessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.HashMap;
 
 @RestController
@@ -42,6 +46,17 @@ public class AuthController {
         } else {
             log.info("Authentication failed.");
         }
+    }
 
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+            userSessionService.setAuthStatus(false);
+            userSessionService.setUserName(null);
+            userSessionService.setUserId(null);
+            userSessionService.setUserInit(null);
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .location(URI.create("/products"))
+                .build();
     }
 }
