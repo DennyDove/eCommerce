@@ -68,9 +68,15 @@ public class OrderService {
         }
     }
 
-    //toDo
     @Transactional
-    public void saveAdmin(Order order, OrderStatus[] status) {
+    public void updateOrderAdmin(Order order) {
+        orderRepository.save(order);
+    }
+
+
+    /*toDo
+    @Transactional
+    public void saveAdmin1(Order order, OrderStatus[] status) {
         List<Order> orders = orderRepository.findAllByStatus(OrderStatus.InWork);
         int i = 0;
         for(Order o : orders) {
@@ -78,6 +84,7 @@ public class OrderService {
         }
         orderRepository.saveAll(orders);
     }
+    */
 }
 
 

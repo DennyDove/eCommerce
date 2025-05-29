@@ -46,7 +46,6 @@ public class CartController {
     public void deleteCartItem(@RequestParam(value = "id", required = true) Long cartItemId) {
         cartItemService.delete(cartItemId);
     }
-
 }
         /* Используем аспектный подход ExceptionControllerAdvice
            Вместо конструкции try-catch:

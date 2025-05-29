@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- Шаблон для просмотра заказов авторизованного пользователя для администратора -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="UTF-8">
+    <title>Main page</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h3></h3>
+<!-- Основной контейнер, включающий остальные DIV-->
+<div id="container">
+  <div class="header">
+    <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
+    <div class="block_holder1">
+      <div class="profile_user"> <a href="/userprofile"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
+      <div class="cart"> <a href="/cart"> <img th:if="${coinsInCart == 0}" src="images/shopping_cart.png" width="53" height="53" border="0">
+                                          <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
+    </div>
+
+  <div> <h2>Состав заказа №[[ ${order.id} ]]</h2> </div>
+
+    <div id="content_container">
+
+      <form th:action="@{/adminaction}" method="post" th:object="${order}">
+
+        <!-- Найдено оптимальное решение обработки форм через th:object="${order}" в теге формы см. выше
+        и в контроллере @ModelAttribute("order" Order order)  -->
+        <div class="cart_text"><input type="hidden" th:field="*{id}" th:value="${order.id}"></div>
+        <div class="cart_text"><input type="hidden" th:field="*{user}" th:value="${order.user}"></div>
+
+        <div class="cart_text"> Статус: [[ ${order.status.title} ]]
+          <label for="status_change">Изменить статус:</label>
+          <select id="status_change" th:field="*{status}" >
+            <option th:each="s : ${statusList}" th:value="${s}" th:text="${s.title}"></option>
+
+          </select>
+        </div>
+        <input type="submit" value="Изменить статус">
+      </form>
+
+          <div class="itemAdded" th:each="coin: ${coins}">
+
+            <div class="table">
+               <div class="column">
+                   <div class="cart_item"> <img th:src="@{'data: product/jpeg; base64, '+${coin.product.getImageDataBase64()}}" width="53" height="53" border="0">
+                   </div>
+                   <div class="cart_text">  [[ ${coin.product.name} ]] </div>
+                   <div class="cart_text"> Цена: [[ ${coin.product.price} ]] </div>
+                   <div class="cart_text">  Количество: [[ ${coin.quantity} ]] </div>
+               </div>
+            </div>
+
+           </div>
+      </div>
+
+      <!-- <tr id="product" th:each="p: ${products}">  (quantity=${quantity})  th:field="*{quantity}"
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+        </tr>
+    </table> -->
+    <!-- <h2>Add a product</h2>
+        <form action="/products" method="post">
+            Name: <input type="text" name="name"><br />
+            Price: <input type="number" step="any" name="price"><br />
+            <button type="submit">Add product</button>
+        </form>
+    -->
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
