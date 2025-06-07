@@ -50,10 +50,10 @@ public class AuthController {
 
     @GetMapping("/logout")
     public ResponseEntity<?> logout() {
-            userSessionService.setAuthStatus(false);
-            userSessionService.setUserName(null);
-            userSessionService.setUserId(null);
-            userSessionService.setUserInit(null);
+        userSessionService.setAuthStatus(false);
+        userSessionService.setUserName(null);
+        userSessionService.setUserId(null);
+        userSessionService.setUserInit(null);
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .location(URI.create("/products"))

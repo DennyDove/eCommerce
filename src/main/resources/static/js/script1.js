@@ -7,7 +7,7 @@ let loginButton = document.getElementById("loginButton");
 async function authentication() {
 
   let obj = {
-    login : login.value,
+    username : login.value,
     password : password.value
   };
 
@@ -19,6 +19,8 @@ async function authentication() {
       body: JSON.stringify(obj)
     });
 
+
+//  При подключении модуля Spring Security переход на страницу "/products" лучше реализовать в конфигурации Spring Security, а не через JavaScript
   if(request.ok) {
     window.location.replace("/products");
 

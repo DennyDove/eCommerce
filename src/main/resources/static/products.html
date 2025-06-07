@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="content-type" content="text/html" charset="UTF-8">
     <title>Main page</title>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="jquery-3.7.1.min.js" ></script> <!-- подколючение библиотеки jQuery -->
+    <link href="/styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-3.7.1.min.js" ></script> <!-- подколючение библиотеки jQuery -->
 </head>
 <body>
 <!-- <h1>Клуб нумизматов</h1> -->
@@ -20,7 +20,7 @@
     <div class="header">
       <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
       <div class="block_holder1">
-        <div class="profile"> <a href="/login.html"> <img src="images/profile.png" width="33" height="33" border="0"> </a> </div>
+        <div class="profile"> <a href="/login"> <img src="images/profile.png" width="33" height="33" border="0"> </a> </div>
         <div class="cart"> <a href="/cart"> <img th:if="${coinsInCart == 0}" src="images/shopping_cart.png" width="53" height="53" border="0">
                                             <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
       </div>
@@ -87,5 +87,7 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<!-- В шаблонизаторе Thymeleaf джава скрипт подключается особым образом. См. ниже  -->
+<script th:src="@{/js/script.js}"></script>
+
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="content-type" content="text/html" charset="UTF-8">
     <title>Main page</title>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <h3></h3>
@@ -56,7 +56,8 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<!-- В шаблонизаторе Thymeleaf джава скрипт подключается особым образом. См. ниже  -->
+<script th:src="@{/js/script.js}"></script>
 
 </body>
 </html>

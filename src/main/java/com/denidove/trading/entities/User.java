@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -22,19 +23,19 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column //(nullable = false)
-    private String login;
-
     @Column(nullable = false)
     private Integer age;
+
+    @Column (nullable = false)
+    private String login;
 
     @Column(nullable = false)
     private String password;
 
     @ManyToOne
     private Role role;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Order> orders;
-
 }

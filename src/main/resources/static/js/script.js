@@ -6,8 +6,40 @@ let name = document.getElementById("name");
 let login = document.getElementById("login");
 let age = document.getElementById("age");
 let password = document.getElementById("password");
+let confirmPassword = document.getElementById("confirmPassword");
+let errorMessage = document.getElementById("errorMessage");
+
+let form = document.getElementById("form");
 let regButton = document.getElementById("regButton");
 
+let correctPassword = false;
+
+
+// Проверка совпадения паролей
+function checkPassword() {
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
+    if (password != confirmPassword) {
+        errorMessage.className = "show-error";
+        correctPassword = false;
+        //alert("Error! Password did not match.");
+        //return false;
+    }
+    else {
+        errorMessage.className = "hide-error";
+        correctPassword = true;
+        //alert("Password Match. Congratulations!");
+        //return true;
+    }
+}
+
+/*
+confirmPassword.addEventListener('keyup', () => {
+})
+*/
+
+
+// Регистрация нового пользователя
 async function createUser() {
 
   let obj = {
@@ -34,8 +66,12 @@ async function createUser() {
   }
 }
 
+confirmPassword.addEventListener("keyup", function() {
+  checkPassword();
+});
+
 regButton.addEventListener("click", function() {
-    createUser();
+    if(correctPassword === true) createUser();  
 });
 
 async function deleteItem(prodId) {
@@ -64,41 +100,3 @@ async function deleteItem(prodId) {
   });
   */
 }
-
-/*
-async function buyCoin(prodId, qty) {
-
-  let request = await fetch("/buycoin?id="+ prodId +"&quantity="+qty,
-    {
-*/
-
-
-/* Функция работает некорректно из-за сложностей с формированием входных параметров "prodId", "qty в ThymeLeaf
-async function buyCoin(prodId, qty) {
-
-  let request = await fetch("/buycoin?id="+ prodId +"&quantity="+qty,
-    {
-      method: 'POST',
-      headers: {"Content-Type" : "application/x-www-form-urlencoded"},
-    });
-
-  if(request.ok) {
-    alert("Coin added");
-    window.location.replace("/products");
-
-  } else {
-    alert("HTTP error: "+ request.status);
-  }
-}
-*/
-
-
-/*
-function priceWithDelim() {
-	$('#price').text((this.value).toLocaleString());
-};
-
-$('#price')
-  .change(priceWithDelim)
-  .change();
-*/

@@ -125,7 +125,10 @@ public class ViewController {
         return "cart.html";
     }
 
+    @GetMapping("/login")
+    public String login() {
+            return "login.html";
 
-
+    }
 }
 

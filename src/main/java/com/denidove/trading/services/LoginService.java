@@ -36,7 +36,7 @@ public class LoginService {
     }
 
     public User loginCheck (LoginDto loginDto) {
-        User user = userRepository.findUserByLogin(loginDto.getLogin()).get();
+        User user = userRepository.findUserByLogin(loginDto.getUsername()).get();
         if(loginDto.getPassword().equals(user.getPassword())) {
             userSessionService.setAuthStatus(true);
             userSessionService.setUserId(user.getId());

@@ -3,8 +3,8 @@
 <head>
     <meta http-equiv="content-type" content="text/html" charset="UTF-8">
     <title>Main page</title>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="jquery-3.7.1.min.js" ></script> <!-- подколючение библиотеки jQuery -->
+<link href="styles/style.css" th:href="@{/styles/style.css}" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-3.7.1.min.js" ></script> <!-- подколючение библиотеки jQuery -->
 </head>
 <body>
 <h3></h3>
@@ -13,7 +13,7 @@
   <div class="header">
     <div class="block_logo"> <a href="/products"> <img src="images/Coin8_logo1.jpg" width="730" height="194" border="0"> </a> </div>
     <div class="block_holder1">
-      <div class="profile_user"> <a href="userprofile"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
+      <div class="profile_user"> <a href="/userprofile"> <img src="images/profile1.png" width="33" height="33" border="0"> <div class="auth_user">[[${userInit}]]</div> </a> </div>
       <div class="cart"> <a href="/cart"> <img th:if="${coinsInCart == 0}" src="images/shopping_cart.png" width="53" height="53" border="0">
                                           <img th:if="${coinsInCart > 0}" src="images/shopping_cart1.png" width="53" height="53" border="0"> </a> </div>
     </div>

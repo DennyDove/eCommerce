@@ -30,6 +30,17 @@ body, html {
 	color: #9999FF;
 }
 
+/* Для отображения сообщения об ошибке*/
+.show-error{
+    color: red;
+    display: block;
+}
+
+/* Для скрытия сообщения об ошибке*/
+.hide-error{
+    display: none;
+}
+
 p {
 	font-size: 12px;
 	font-weight: normal;
